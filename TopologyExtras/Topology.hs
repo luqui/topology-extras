@@ -45,6 +45,11 @@ instance (Overt a, Overt b) => Overt (a,b) where
 instance (Compact a, Compact b) => Compact (a,b) where
     forevery p = forevery (\x -> forevery (\y -> p (x,y)))
 
+instance (Compact a, Discrete b) => Discrete (a -> b) where
+    f === g  =  forevery (\x -> f x === g x)
+instance (Overt a, Hausdorff b) => Hausdorff (a -> b) where
+    f =/= g  =  forsome (\x -> f x =/= g x)
+
 instance (Discrete a, Discrete b) => Discrete (Either a b) where
     Left x  === Left y  = x === y
     Right x === Right y = x === y
